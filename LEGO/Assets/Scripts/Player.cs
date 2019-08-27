@@ -60,7 +60,7 @@ public class Player : MonoBehaviour
 
     public float DistanceFromGroud()
     {
-        if (Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, out var hitinfo, 10f, 1))
+        if (Physics.Raycast(transform.position + Vector3.up * 0.2f, Vector3.down, out var hitinfo, 10f, LegoLogic.LayerMaskLego))
             return hitinfo.distance - 0.21f;
         else
             return float.MaxValue;

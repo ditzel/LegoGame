@@ -26,7 +26,7 @@ public class Controller : MonoBehaviour
     {
         Player = FindObjectOfType<Player>();
         LastMousePos = Input.mousePosition;
-        Cursor.lockState = CursorLockMode.None;
+        Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = false;
     }
 
