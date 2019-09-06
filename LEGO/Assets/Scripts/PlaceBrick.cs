@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlaceBrick : MonoBehaviour
 {
-    public Brick PrefabBrick;
+    public Brick[] BrickLib;
+    public Material[] MatLib;
+    protected Brick PrefabBrick;
     public Material TransparentMat;
-    public Material BrickMat;
+    protected Material BrickMat;
 
     public Vector3 Debug;
 
@@ -22,12 +24,25 @@ public class PlaceBrick : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        SetNextBrick();
+        PrefabBrick = BrickLib[0];
+        BrickMat = MatLib[0];
     }
 
     // Update is called once per frame
     void Update()
     {
+        if (Controller.Mode != Controller.ControllerMode.Build)
+        {
+            if (CurrentBrick != null)
+                Destroy(CurrentBrick.gameObject);
+            return;
+        }
+        else
+        {
+            if (CurrentBrick == null)
+                SetNextBrick();
+        }
+
         if (CurrentBrick != null)
         {
             if (Physics.Raycast(Camera.main.transform.position + Vector3.up * 0.1f * Controller.CameraDistance, Camera.main.transform.forward, out var hitInfo, float.MaxValue, LegoLogic.LayerMaskLego))
@@ -75,5 +90,11 @@ public class PlaceBrick : MonoBehaviour
         CurrentBrick = Instantiate(PrefabBrick);
         CurrentBrick.Collider.enabled = false;
         CurrentBrick.SetMaterial(TransparentMat);
+    }
+
+    public void SetPrefab(int brick, int mat)
+    {
+        PrefabBrick = BrickLib[brick];
+        BrickMat = MatLib[mat];
     }
 }
