@@ -9,9 +9,7 @@ public class PlaceBrick : MonoBehaviour
     protected Brick PrefabBrick;
     public Material TransparentMat;
     protected Material BrickMat;
-
-    public Vector3 Debug;
-
+    
     protected Controller Controller;
     protected Brick CurrentBrick;
     protected bool PositionOk;
@@ -71,6 +69,7 @@ public class PlaceBrick : MonoBehaviour
             }
         }
 
+        //Place the brick
         if(Input.GetMouseButtonDown(0) && CurrentBrick != null && PositionOk)
         {
             CurrentBrick.Collider.enabled = true;
@@ -81,8 +80,24 @@ public class PlaceBrick : MonoBehaviour
             CurrentBrick.transform.rotation = rot;
         }
 
+        //Rotate Brick
         if (Input.GetKeyDown(KeyCode.E))
             CurrentBrick.transform.Rotate(Vector3.up, 90);
+
+        //Delete Brick
+        if (Input.GetMouseButtonDown(1))
+        {
+            if (Physics.Raycast(Camera.main.transform.position + Vector3.up * 0.1f * Controller.CameraDistance, Camera.main.transform.forward, out var hitInfo, float.MaxValue, LegoLogic.LayerMaskLego))
+            {
+                var brick = hitInfo.collider.GetComponent<Brick>();
+                if(brick != null)
+                {
+                    GameObject.DestroyImmediate(brick.gameObject);
+                }
+
+            }
+        }
+
     }
 
     public void SetNextBrick()
